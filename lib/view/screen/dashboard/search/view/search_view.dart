@@ -8,6 +8,7 @@ import 'package:capricon/utils/utils.dart';
 import 'package:capricon/view/components/box_shadow.dart';
 import 'package:capricon/view/screen/dashboard/search/viewmodel/search_viewmodel.dart';
 import 'package:capricon/view/screen/dashboard/search/viewmodel/state/search_state.dart';
+import 'package:capricon/view/screen/dashboard/search/widgets/search_card_shimmer.dart';
 import 'package:flutter/material.dart';
 
 class SearchPageView extends ConsumerStatefulWidget {
@@ -78,6 +79,18 @@ class _SearchPageViewState extends ConsumerState<SearchPageView> {
                 Builder(
                   builder: (_){
                     switch(searchState){
+                      case SearchLoading():
+                        return ListView.separated(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index){
+                            return SearchCardShimmer();
+                          }, 
+                          separatorBuilder: (context, index){
+                            return gapH8;
+                          }, 
+                          itemCount: 5
+                        );
                       case SearchLoaded(data: var data):
                         return data.isEmpty
                         ? const Center(child: Text("No results found."))
