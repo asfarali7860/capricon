@@ -19,6 +19,7 @@ class ApiClient {
   Future<Response> post(String path, dynamic data,
       {bool addCookies = false, bool sendCookies = false}) async {
     try {
+      Logger.printError("${AppConstants.baseUrl}/$path $data");
       return await dio.post("${AppConstants.baseUrl}/$path",
           data: data,
       );

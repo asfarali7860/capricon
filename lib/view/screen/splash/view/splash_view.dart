@@ -2,22 +2,34 @@
 
 import 'package:capricon/routes/app_routes.dart';
 import 'package:capricon/utils/colors.dart';
+import 'package:capricon/utils/utils.dart';
+import 'package:capricon/view/screen/login/viewModel/login_viewmodel.dart';
+import 'package:capricon/view/screen/login/viewModel/state/login_state.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class SplashView extends StatefulWidget {
+class SplashView extends ConsumerStatefulWidget {
   const SplashView({super.key});
 
   @override
-  State<SplashView> createState() => _SplashViewState();
+  ConsumerState<SplashView> createState() => _SplashViewState();
 }
 
-class _SplashViewState extends State<SplashView> {
+class _SplashViewState extends ConsumerState<SplashView> {
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      ref.read(loginNotifierProvider.notifier).getUserData();
+    });
     Future.delayed(const Duration(seconds: 2), () {
+      final state = ref.read(loginNotifierProvider);
+      Logger.printError(state.loginResponse.toString());
       if (mounted) {
-        context.pushReplacementNamed(AppRoute.signInPage.name);
+        if(state is LoginError){
+          context.pushReplacementNamed(AppRoute.signInPage.name);
+        } else {
+          context.pushReplacementNamed(AppRoute.dashboard.name);
+        }
       }
     });
     super.initState();

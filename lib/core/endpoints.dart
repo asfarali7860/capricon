@@ -1,6 +1,7 @@
 enum EndPoints {
   login,
   search,
+  searchId
 }
 
 extension EndPointExtension on EndPoints{
@@ -10,13 +11,16 @@ extension EndPointExtension on EndPoints{
         return 'api/auth/local';
       case EndPoints.search:
         return 'api/stocks/search';
+      case EndPoints.searchId:
+        return 'api/stocks/';
     }
   }
 }
 
 extension AuthExtension on String{
   bool get requiresBearerToken {
-    if( contains(EndPoints.search.val())
+    if( contains(EndPoints.search.val()) ||
+      contains(EndPoints.searchId.val())
     ){
       return true;
     } else{

@@ -4,6 +4,7 @@ import 'package:capricon/core/exception.dart';
 import 'package:capricon/core/state/data_state.dart';
 import 'package:capricon/data/remote/login/login_repository.dart';
 import 'package:capricon/data/remote/login/models/login_model.dart';
+import 'package:capricon/utils/logger.dart';
 
 class LoginRepositoryImpl implements LoginRepository {
   final ApiClient _apiClient;
@@ -16,9 +17,11 @@ class LoginRepositoryImpl implements LoginRepository {
         EndPoints.login.val(),
         loginRequestModel.toJson()
       );
+      Logger.printError(response.toString());
 
     return DataStateSuccess<LoginReesponseModel>(data: LoginReesponseModel.fromJson(response.data));
     }catch(ex){
+      Logger.printError(ex.toString());
       return DataStateError<LoginReesponseModel>(ex: ApiException(ex.toString()));
     }
   }

@@ -10,16 +10,26 @@ class SearchRepositoryImpl implements SearchRepository {
   SearchRepositoryImpl(this._apiClient);
 
   @override
-  Future<DataState<SearchResponseModel>> getSearch({required QuerySearch querySearch}) async {
+  Future<DataState<List<SearchResponseModel>>> getSearch({required QuerySearch querySearch}) async {
     try{
       final response = await _apiClient.get(
-        EndPoints.login.val(),
+        EndPoints.search.val(),
         queryParams: querySearch.toJson()
       );
 
-    return DataStateSuccess<SearchResponseModel>(data: SearchResponseModel.fromJson(response.data));
+      if (response.data is List) {
+        final List<SearchResponseModel> searchResults = (response.data as List)
+            .map((item) => SearchResponseModel.fromJson(item as Map<String, dynamic>))
+            .toList();
+
+        return DataStateSuccess<List<SearchResponseModel>>(data: searchResults);
+      } else {
+        return DataStateError<List<SearchResponseModel>>(
+          ex: ApiException("Invalid response format. Expected List but got ${response.data.runtimeType}"),
+        );
+      }
     }catch(ex){
-      return DataStateError<SearchResponseModel>(ex: ApiException(ex.toString()));
+      return DataStateError<List<SearchResponseModel>>(ex: ApiException(ex.toString()));
     }
   }
 }
