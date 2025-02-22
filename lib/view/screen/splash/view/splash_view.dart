@@ -6,6 +6,7 @@ import 'package:capricon/utils/utils.dart';
 import 'package:capricon/view/screen/login/viewModel/login_viewmodel.dart';
 import 'package:capricon/view/screen/login/viewModel/state/login_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class SplashView extends ConsumerStatefulWidget {
@@ -47,7 +48,7 @@ class _SplashViewState extends ConsumerState<SplashView> {
           child: Image.asset(
             'assets/logo.png',
             fit: BoxFit.cover,
-            height: 400,
+            height: 70.h,
           ),
         ),
       ),
